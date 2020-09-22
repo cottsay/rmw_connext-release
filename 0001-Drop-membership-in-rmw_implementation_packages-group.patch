@@ -1,0 +1,44 @@
+From 99235014806a61ca11ed44f46e8b13ae6298679c Mon Sep 17 00:00:00 2001
+From: Scott K Logan <logans@cottsay.net>
+Date: Mon, 21 Sep 2020 17:36:11 -0700
+Subject: [PATCH] Drop membership in rmw_implementation_packages group
+
+Since this package compiles as an empty package due to the absence of
+RTI Connext, it shouldn't be considered a valid member of the
+rmw_implementation_packages group.
+
+Signed-off-by: Scott K Logan <logans@cottsay.net>
+---
+ package.xml          | 2 --
+ rpm/template.spec.em | 5 +++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/package.xml b/package.xml
+index 7752ec4..a1ddeb6 100644
+--- a/package.xml
++++ b/package.xml
+@@ -38,8 +38,6 @@
+   <test_depend>ament_lint_auto</test_depend>
+   <test_depend>ament_lint_common</test_depend>
+ 
+-  <member_of_group>rmw_implementation_packages</member_of_group>
+-
+   <export>
+     <build_type>ament_cmake</build_type>
+   </export>
+diff --git a/rpm/template.spec.em b/rpm/template.spec.em
+index c0d00ea..ff3e830 100644
+--- a/rpm/template.spec.em
++++ b/rpm/template.spec.em
+@@ -1,3 +1,8 @@
++@{
++# Drop membership in rmw_implementation_packages group
++Provides = [p for p in Provides if p != 'ros-eloquent-rmw-implementation-packages(member)']
++Supplements = [p for p in Supplements if p != 'ros-eloquent-rmw-implementation-packages(all)']
++}@
+ %bcond_without tests
+ %bcond_without weak_deps
+ 
+-- 
+2.26.2
+
